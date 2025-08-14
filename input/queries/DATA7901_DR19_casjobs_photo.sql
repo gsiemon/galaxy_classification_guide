@@ -16,7 +16,8 @@ SELECT Distinct
   s.programname,
   s.class,
   s.sdssPrimary,
-  v.*
+  v.*,
+  p.*
 INTO mydb.DATA7901_DR19
 FROM PhotoObj AS p
   LEFT JOIN SpecObj AS s ON s.bestobjid = p.objid
