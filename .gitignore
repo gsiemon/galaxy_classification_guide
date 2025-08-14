@@ -1,0 +1,22 @@
+# Project data (large or regenerated)
+input/tables/DATA7901_DR19.csv
+#input/images/
+#input/spectra/
+
+# Python and notebook artifacts
+__pycache__/
+.ipynb_checkpoints/
+
+# Local environments & OS files
+.venv/
+.DS_Store
+# Local configuration files (not committed)
+notebooks/config.py
+
+# Jupyter notebook checkpoints
+notebooks/.ipynb_checkpoints/
+
+# macOS
+.DS_Store
+
+
