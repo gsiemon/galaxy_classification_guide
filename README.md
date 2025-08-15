@@ -61,6 +61,7 @@ CasJobs portal for running SDSS SQL queries: [https://casjobs.sdss.org/casjobs/]
    ![CasJobs query workspace](notebooks/figures/casjobs_query.png)
 
 4) Open a new query window and paste the contents of `input/queries/DATA7901_DR19_casjobs.sql`.
+  - Select DR19 from the dropdown menu under Context 
    - The query creates `mydb.DATA7901_DR19` with the following (key) columns:
      - `objid`, `ra`, `dec`, Galactic `l`, `b`
      - Spectra identifiers: `specObjID`, `plate`, `mjd`, `fiberid`, `class`, `programname`, `sdssPrimary`
