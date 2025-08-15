@@ -1,7 +1,7 @@
 -- DATA7901 SDSS DR19 CasJobs query
 -- Usage: Paste into SDSS CasJobs and run. Results will be saved to mydb.DATA7901_DR19
 
-SELECT Distinct
+SELECT Distinct TOP (100) 
   p.objid,
   p.ra,
   p.dec,

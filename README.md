@@ -124,9 +124,24 @@ If you don’t have `wget`, either install it or use the Python fallback cell (a
 ### Step 4 — Visualise the cutouts
 - The notebook includes a cell that shows the first 10 downloaded JPEGs side-by-side with titles from the filename (`objid`).
 
-### Step 5 — Download and visualise spectra (optional)
+### Step 5 — Download a small photometric catalogue sample (PhotoObj)
+
+This step mirrors Step 1, but targets the full photometric catalogue. Because the table is large, start by downloading only the first 100 rows to validate your workflow.
+
+- Open a new CasJobs query window and use the query in `input/queries/DATA7901_DR19_casjobs_photo.sql`. To limit output for testing, adapt the select to `TOP (100)` (see comments inside the SQL file for guidance).
+- Run the query. Export the result to CSV and examine columns to confirm they match expectations. Only after you are confident, consider exporting the full photometric catalogue; be mindful this can be a very large file (GB‑scale), so plan storage and bandwidth accordingly.
+
+### Step 6 — Download and visualise spectra (optional)
 - The notebook includes a cell to download the first N spectra using `plate`, `mjd`, and `fiberid` into `input/spectra/`.
 - It then plots a few spectra using `astropy.io.fits` to read common SDSS formats (prefers table HDUs with `loglam`/`flux`, falls back to image HDUs with `COEFF0/COEFF1`).
+
+
+### Step 7 — Download a small spectroscopic catalogue sample (SpecObj)
+
+As with the photometric sample, begin with a small spectroscopic extract to validate the pipeline.
+
+- Open a new CasJobs query window and use the query in `input/queries/DATA7901_DR19_casjobs_spectra.sql`. To keep the output manageable for testing, adapt the select to `TOP (100)` (see notes in the SQL file).
+- Run the query. Export to CSV and inspect. If/when you decide to export the full spectroscopic set, note that files will be large; plan storage and versioning appropriately.
 
 
 ### Troubleshooting
