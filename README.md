@@ -118,9 +118,6 @@ If you don’t have `wget`, either install it or use the Python fallback cell (a
 - The notebook includes a cell to download the first N spectra using `plate`, `mjd`, and `fiberid` into `input/spectra/`.
 - It then plots a few spectra using `astropy.io.fits` to read common SDSS formats (prefers table HDUs with `loglam`/`flux`, falls back to image HDUs with `COEFF0/COEFF1`).
 
-Tips:
-- Spectra URLs in the example target the SDSS DR14 “lite” paths. If a URL returns 404, skip or adjust the base URL to a matching DR for your rows.
-- Be gentle with external services. Keep download limits small (e.g., 10–50) while testing.
 
 ### Troubleshooting
 - “File not found”: confirm your CSV is named `DATA7901_DR19.csv` and placed under `input/tables/`.
@@ -134,6 +131,126 @@ After you’ve verified the data flows end-to-end:
 - Feature engineering from tables (e.g., thresholds on `p_el`, vote counts)
 - Image models (CNNs) and spectral models
 - Model evaluation and reporting
+
+
+Tips:
+- Be gentle with external services. Keep download limits small (e.g., 10–50) while testing.
+- Think carefully about data volume before mass downloads (cutouts/spectra can be many large files):
+  - Start small; download a handful first and verify your pipeline end‑to‑end.
+  - Estimate storage needs (files × average size) and ensure you have space and bandwidth.
+  - Save to the intended locations (`input/images/`, `input/spectra/`) and keep a tidy directory structure.
+  - If pushing to github remember to add large files and folders to the gitignore file
+  - Consider caching, checkpoints, or manifests to avoid repeated downloads.
+  - If you need everything, parallelize cautiously and be respectful of rate limits.
+
+#### Understanding Your Astronomical Data
+
+- **Exploratory Data Analysis (EDA) is crucial**:
+  - Visualize distributions of key features (redshift, magnitude, colors)
+  - Check class imbalance in galaxy types
+  - Identify correlations between features
+  - Understand missingness patterns (not random in astronomy!)
+  
+- **Domain-specific considerations**:
+  - Photometric errors are not uniform (fainter objects = larger errors)
+  - Selection effects: your sample may be biased by survey limitations
+  - Physical relationships exist (e.g., color-magnitude diagrams)
+
+#### Astronomy-specific ML Considerations
+
+- **Feature engineering opportunities**:
+  - Color indices (e.g., g-r, r-i)
+  - Morphological parameters from images
+  - Spectral line ratios and equivalent widths
+  - Photometric redshift estimates
+  
+- **Handling measurement uncertainties**:
+  - Consider using error-weighted loss functions
+  - Propagate uncertainties through your pipeline
+  - Bootstrap/Monte Carlo for uncertainty quantification
+
+#### Scalability and Efficiency
+
+- **Memory management**:
+  - Use data generators/loaders for large datasets
+  - Consider chunking strategies for processing
+  - Profile memory usage before scaling up
+  
+- **Model complexity vs. performance trade-off**:
+  - Start with simple, fast models for baseline
+  - Document training time and inference speed
+  - Consider model size for deployment scenarios
+
+#### Project Organization and Reproducibility
+
+- **Version control best practices**:
+  - Don't commit large data files (use .gitignore)
+  - Document random seeds for reproducibility
+  - Keep a changelog of experiments
+  
+- **Documentation requirements**:
+  - README with clear setup instructions
+  - Requirements.txt or environment.yml
+  - Jupyter notebooks with markdown explanations
+  - Final report linking to industry applications
+
+#### Guidance for building ML models
+
+- First and foremost, this is your project — organize it in a way that works for you and be innovative.
+- Break work into small tasks:
+  - Clarify the objective (what is success?).
+  - Choose problem type: Classification vs Regression.
+  - Prepare your data: handle missing values, outliers, scaling, encode categoricals.
+  - Choose and implement cross‑validation.
+  - Select candidate models; train baselines and iterate.
+  - Evaluate with appropriate metrics; fine‑tune hyperparameters.
+
+- Cross-validation options (pick what fits your data):
+  - **Stratified K-fold**: Recommended for imbalanced galaxy classes
+  - **Hold-out**: Good for large datasets (70/15/15 or 60/20/20 split)
+  - **Time-based split**: If using time-series spectral features
+  - K-fold: Standard choice for balanced datasets
+  - Group K-fold: If galaxies are grouped (e.g., by survey region)
+
+- Data and model types:
+  - Supervised: has one or more targets
+    - Classification: predict a category
+    - Regression: predict a continuous value
+  - Unsupervised: no target (e.g., clustering, dimensionality reduction)
+
+- Tabulated data — common model choices:
+  - Decision Trees
+  - Random Forests
+  - Logistic Regression
+  - Gradient Boosting (e.g., XGBoost/LightGBM/CatBoost)
+  - Neural Networks (use judiciously; simpler models may match performance with less complexity)
+
+- Evaluation metrics (select per objective):
+  - **Classification**: 
+    - Confusion matrix (essential for multi-class)
+    - Per-class precision/recall (identify weak classes)
+    - Weighted/macro/micro F1 scores
+    - ROC curves for each class (one-vs-rest)
+  - **Regression** (if predicting continuous properties):
+    - MAE, MSE, RMSE
+    - R² score
+    - Residual plots
+
+- Deep Learning considerations:
+  - CNNs for galaxy images (consider transfer learning from pre-trained models)
+  - 1D CNNs or LSTMs for spectra
+  - Attention mechanisms for identifying important features
+  - Start with smaller architectures; deep ≠ better
+  - Monitor for overfitting (use early stopping, dropout)
+
+#### Common Pitfalls to Avoid
+
+- Data leakage: Ensure no target information in features
+- Overfitting to small samples: Use proper validation
+- Ignoring class imbalance: Consider SMOTE, class weights
+- Not checking data quality: Remove artifacts, bad pixels
+- Forgetting to scale features: Especially mixing images/tabular data
+- Training on incomplete data: Handle NaNs before modeling
 
 ### Acknowledgements
 - SDSS CasJobs and data services
