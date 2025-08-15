@@ -1,6 +1,6 @@
 ## DATA7901 Galaxy Classification Starter (UQ)
 
-This repository is a ready-to-run starter kit for the semester project described in `galaxy_classification_guide.md`. It walks you through getting the data from SDSS, exploring key columns, and downloading/visualising galaxy images and spectra.
+This repository is a ready-to-run starter kit for the semester project described in `galaxy_classification_guide.md`. It walks you through getting the data from SDSS, exploring key columns, and downloading/visualising galaxy images (DESI Legacy Survey) and spectra (SDSS DR19).
 
 ### What you’ll do
 - Run the provided SQL on SDSS CasJobs to build your project table
@@ -14,9 +14,13 @@ This repository is a ready-to-run starter kit for the semester project described
 - `input/images/`: JPEG cutouts downloaded by the notebook
 - `input/spectra/`: FITS spectra downloaded by the notebook
 - `notebooks/explore_tables.ipynb`: Main walkthrough: load CSV, validate fields, histograms, download and visualise images and spectra
-- `notebooks/get_cutouts.ipynb`: Additional cutout helper notebook (optional)
 - `src/`: We will keep all the Python scripts associated with the project here. If we talk about a Python script (any `*.py` file), it is stored in `src/`.
 - `models/`: This folder keeps all the trained models (saved checkpoints/weights, experiment outputs).
+- `.gitignore`: **Important!** This file prevents large data files and sensitive configurations from being pushed to GitHub. It should include:
+  - Data directories (`input/images/`, `input/spectra/`, `input/tables/*.csv`)
+  - Model files (`models/*.pkl`, `models/*.h5`, `models/*.pth`)
+  - Personal configuration files with local paths (`config.py`, `local_settings.py`)
+  - System files (`__pycache__/`, `.DS_Store`, `*.pyc`)
 
 ### Prerequisites
 - Python 3.10+ (tested with 3.12)
