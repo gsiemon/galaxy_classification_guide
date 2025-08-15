@@ -48,7 +48,19 @@ pip install jupyter numpy pandas matplotlib astropy
    You should see a page similar to this:
 
    ![CasJobs home](notebooks/figures/casjobs_home.png)
-2) Open a new query window and paste the contents of `input/queries/DATA7901_DR19_casjobs.sql`.
+
+2) Click "Login". You can create a new SciServer account or use Globus to authenticate:
+
+   ![CasJobs / SciServer login](notebooks/figures/casjobs_login.png)
+
+3) After confirming your email and completing sign-in, you should see the CasJobs query workspace. This is where you'll paste and run the SQL provided in this repo:
+
+   ![CasJobs query workspace](notebooks/figures/casjobs_query.png)
+
+4) Submit the query. Within a few seconds to minutes (depending on load), the job status should be "Finished" with the message "Query Complete". That confirms your table was created in `MyDB` without errors:
+
+   ![CasJobs query finished](notebooks/figures/casjobs_query_finished.png)
+4) Open a new query window and paste the contents of `input/queries/DATA7901_DR19_casjobs.sql`.
    - The query creates `mydb.DATA7901_DR19` with the following (key) columns:
      - `objid`, `ra`, `dec`, Galactic `l`, `b`
      - Spectra identifiers: `specObjID`, `plate`, `mjd`, `fiberid`, `class`, `programname`, `sdssPrimary`
@@ -73,8 +85,8 @@ pip install jupyter numpy pandas matplotlib astropy
    - TABLE SpecObj: [https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=SpecObj&t=U](https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=SpecObj&t=U)
    - TABLE zooVotes (Galaxy Zoo): [https://skyserver.sdss.org/dr8/en/help/browser/description.asp?n=zooVotes&t=U](https://skyserver.sdss.org/dr8/en/help/browser/description.asp?n=zooVotes&t=U)
    - The filters in the SQL (magnitude and redshift cuts, and `zWarning = 0`) keep the result manageable.
-3) Run the query. When it completes, export the results from `mydb.DATA7901_DR19` as CSV.
-4) Save the CSV locally as `DATA7901_DR19.csv` and place it at:
+5) Run/Submit the query. When it completes, export the results from `mydb.DATA7901_DR19` as CSV.
+6) Save the CSV locally as `DATA7901_DR19.csv` and place it at:
 ```
 input/tables/DATA7901_DR19.csv
 ```
