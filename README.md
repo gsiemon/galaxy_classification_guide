@@ -79,11 +79,17 @@ CasJobs portal for running SDSS SQL queries: [https://casjobs.sdss.org/casjobs/]
        - `p_mg`: merger
        - `p_cs`: combined spiral (cw + acw + edge-on)
 
-   SDSS schema references (useful while building and inspecting your table):
-   - SDSS Table Descriptions: [https://skyserver.sdss.org/dr7/en/help/docs/tabledesc.asp](https://skyserver.sdss.org/dr7/en/help/docs/tabledesc.asp)
-   - TABLE PhotoObj: [https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=PhotoObj&t=U](https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=PhotoObj&t=U)
-   - TABLE SpecObj: [https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=SpecObj&t=U](https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=SpecObj&t=U)
-   - TABLE zooVotes (Galaxy Zoo): [https://skyserver.sdss.org/dr8/en/help/browser/description.asp?n=zooVotes&t=U](https://skyserver.sdss.org/dr8/en/help/browser/description.asp?n=zooVotes&t=U)
+   Visual guide to Galaxy Zoo class buttons used in the project (reproduced from Lintott et al. 2011):
+
+   ![Galaxy Zoo classes](notebooks/figures/gz1_classes_table.png)
+
+   Source: Lintott, C. et al. (2011), “Galaxy Zoo 1: data release of morphological classifications for nearly 900,000 galaxies,” MNRAS, 410, 166. ADS link: https://ui.adsabs.harvard.edu/abs/2011MNRAS.410..166L/abstract
+
+    SDSS schema references (useful while building and inspecting your table):
+    - SDSS Table Descriptions: [https://skyserver.sdss.org/dr7/en/help/docs/tabledesc.asp](https://skyserver.sdss.org/dr7/en/help/docs/tabledesc.asp)
+    - TABLE PhotoObj: [https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=PhotoObj&t=U](https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=PhotoObj&t=U)
+    - TABLE SpecObj: [https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=SpecObj&t=U](https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=SpecObj&t=U)
+    - TABLE zooVotes (Galaxy Zoo): [https://skyserver.sdss.org/dr8/en/help/browser/description.asp?n=zooVotes&t=U](https://skyserver.sdss.org/dr8/en/help/browser/description.asp?n=zooVotes&t=U)
    - The filters in the SQL (magnitude and redshift cuts, and `zWarning = 0`) keep the result manageable.
 
 5) Submit the query. Within a few seconds to minutes (depending on load), the job status should be "Finished" with the message "Query Complete". That confirms your table was created in `MyDB` without errors:
