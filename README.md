@@ -223,6 +223,7 @@ Tips:
   - Random Forests
   - Logistic Regression
   - Gradient Boosting (e.g., XGBoost/LightGBM/CatBoost)
+  - Symbolic Regression (PySR/gplearn) — discovers interpretable equations
   - Neural Networks (use judiciously; simpler models may match performance with less complexity)
 
 - Evaluation metrics (select per objective):
