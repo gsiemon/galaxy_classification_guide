@@ -1,7 +1,5 @@
 ## DATA7901 Galaxy Classification Starter (UQ)
 
-CasJobs portal for running SDSS SQL queries: [https://casjobs.sdss.org/casjobs/](https://casjobs.sdss.org/casjobs/)
-
 This repository is a ready-to-run starter kit for the semester project described in `galaxy_classification_guide.md`. It walks you through getting the data from SDSS, exploring key columns, and downloading/visualising galaxy images and spectra.
 
 ### What you’ll do
@@ -44,6 +42,7 @@ pip install jupyter numpy pandas matplotlib astropy
 ```
 
 ### Step 1 — Build the table in SDSS CasJobs
+CasJobs portal for running SDSS SQL queries: [https://casjobs.sdss.org/casjobs/](https://casjobs.sdss.org/casjobs/)
 1) Go to the SDSS CasJobs website and sign in (create an account if needed).
    You should see a page similar to this:
 
@@ -57,9 +56,6 @@ pip install jupyter numpy pandas matplotlib astropy
 
    ![CasJobs query workspace](notebooks/figures/casjobs_query.png)
 
-4) Submit the query. Within a few seconds to minutes (depending on load), the job status should be "Finished" with the message "Query Complete". That confirms your table was created in `MyDB` without errors:
-
-   ![CasJobs query finished](notebooks/figures/casjobs_query_finished.png)
 4) Open a new query window and paste the contents of `input/queries/DATA7901_DR19_casjobs.sql`.
    - The query creates `mydb.DATA7901_DR19` with the following (key) columns:
      - `objid`, `ra`, `dec`, Galactic `l`, `b`
@@ -85,8 +81,13 @@ pip install jupyter numpy pandas matplotlib astropy
    - TABLE SpecObj: [https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=SpecObj&t=U](https://skyserver.sdss.org/dr7/en/help/browser/browser.asp?n=SpecObj&t=U)
    - TABLE zooVotes (Galaxy Zoo): [https://skyserver.sdss.org/dr8/en/help/browser/description.asp?n=zooVotes&t=U](https://skyserver.sdss.org/dr8/en/help/browser/description.asp?n=zooVotes&t=U)
    - The filters in the SQL (magnitude and redshift cuts, and `zWarning = 0`) keep the result manageable.
-5) Run/Submit the query. When it completes, export the results from `mydb.DATA7901_DR19` as CSV.
-6) Save the CSV locally as `DATA7901_DR19.csv` and place it at:
+
+5) Submit the query. Within a few seconds to minutes (depending on load), the job status should be "Finished" with the message "Query Complete". That confirms your table was created in `MyDB` without errors:
+
+   ![CasJobs query finished](notebooks/figures/casjobs_query_finished.png)
+
+6) When it completes, export the results from `mydb.DATA7901_DR19` as CSV.
+7) Save the CSV locally as `DATA7901_DR19.csv` and place it at:
 ```
 input/tables/DATA7901_DR19.csv
 ```
