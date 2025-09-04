@@ -18,7 +18,7 @@ SELECT Distinct TOP (100)
   s.sdssPrimary,
   v.*,
   s.*
-INTO mydb.DATA7901_DR19_spectra
+INTO mydb.DATA7901_DR19
 FROM PhotoObj AS p
   LEFT JOIN SpecObj AS s ON s.bestobjid = p.objid
   LEFT JOIN zooVotes AS v ON v.objid = p.objid

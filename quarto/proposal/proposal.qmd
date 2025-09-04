@@ -1,0 +1,80 @@
+---
+title: "DATA7901 Draft Project Proposal"
+subtitle: "Semester 2, 2025"
+author: "Greg Siemon (33222314)"
+date: 08/29/2025
+date-format: long
+execute: 
+    echo: false
+    warning: false
+format: 
+    pdf:
+        documentclass: scrreprt
+        geometry:
+            - top=25mm
+            - bottom=25mm
+            - left=25mm
+            - right=25mm
+            - heightrounded
+        papersize: A4
+        number-sections: true
+#        toc: true
+#        lot: true
+#        lof: true
+        appendix-style: default
+        header-includes: 
+          - | 
+            \usepackage[super]{nth}
+bibliography: Data7901.bib
+csl: ieee.csl
+---
+# Introduction
+
+By the end of 2026, a new telescope will have generated more data than all astronomical observations combined @boyleThisRevolutionaryNew.  Imaging the entire southern sky every few nights for ten years, the Vera C Rubin telescope will observe data on billions of galaxies @RubinObservatory.  Galaxy data is critical for development and testing of models of galaxy formation and evolution. Galaxy models can further the development of models of the universe improving our understanding of the universe's formation and structure @parryGalaxyMorphologyLCDM2009. One particular problem in this field is classification of galaxies based on their structure (morphology) which changes as they form, grow and merge with other galaxies. The vast quantity of galaxy data about to arrive from from the Vera C Rubin telescope means that astronomers and cosmologists need highly performant and efficient methods to do galaxy classification. This proposal outlines a project that will evaluate the performance of machine learning methods for classifying galaxies, selecting the the most efficient method or combination of methods. The best machine learning methods will be assembled into an automated, high performance galaxy data processing pipeline.  This work will use data from three main sources, the Sloan Digital Sky Survey (SDSS), the Dark Energy Spectroscopic Instrument (DESI) Legacy Survey and the Galaxy Zoo project @collaborationNineteenthDataRelease2025@deyOverviewDESILegacy2019@lintottGalaxyZooMorphologies2008.  Together these three datasets will encompass the typical measurements obtained from galaxy surveys and previous classification projects.  This proposal outlines: the state of the art for galaxy classification methods and the datasets that are available; why previous approaches are no longer suitable; specific project objectives and; a brief outline of the proposed solution.
+
+# Current situation/methods
+
+A significant debate occurred in the 1920s as to the size of the universe and whether 'spiral nebulae' were part of our own galaxy.  Through observations, Edwin Hubble resolved this debate by showing that 'Spiral Nebulae' were galaxies in their own right and significantly further away than anyone had previously thought @GreatDebateAstronomy2025. Hubble developed a classification system for galaxies as shown in @fig-tuning_fork. The system classifies galaxies into two main types, Elliptical (E) and Spirals (S). Elliptical galaxies are classified based on how stretched they are from nearly spherical (E0) to very elongated (E7). Spiral galaxies are subdivided into normal spirals (S) and barred spirals (SB) depending on whether or not they have a central bar structure. Both spiral types are further subdivided based on how tightly wound the spiral arms are, from tightly wound (a) to loosely wound (c). The galaxies are represented in a tuning fork arrangement because Hubble thought that elliptical galaxies evolved into spiral galaxies.  We now know that elliptical galaxies do not evolve into spiral galaxies however the classification system is still useful and is widely used today. For this project we will focus on classifying galaxies using a slightly simpler system based on the Galaxy Zoo project (@fig-galaxy_zoo_morphology) that determines if a galaxy is Elliptical, Spiral (with a clock-wise or anti-clockwise rotation), a Spiral Galaxy (seen side on) or whether it appears that two galaxies are merging.  A fallback category of 'Don't Know' is also used when the image is too unclear to classify.  This bring us to one of the key issues in Galaxy classification, how are galaxies classified at the moment?
+
+![Edwin Hubble's galaxy classification system @information.eso.orgHubbleTuningFork](images/heic9902o.jpg){#fig-tuning_fork}
+
+![Galaxy Zoo morphology @lintottGalaxyZoo12011](images/gz1_classes_table.png){#fig-galaxy_zoo_morphology}
+
+The figures above indicate that if we can obtain a clear picture of a galaxy then we can classify it pretty simply just by looking at its shape. That is exactly what Edwin Hubble and his group did and it remains a common method of classification today. As the number of observations increased it became increasing difficult to find enough skilled people to do the classification.  In 2007, the Galaxy Zoo initiative started as a Citizen Science project asking members of the public to classify images galaxies collected by telescopes and displayed on a website.  The project demonstrated that non-experts can classify galaxies as well as professional astronomers and that it can be done at scale @lintottGalaxyZooMorphologies2008.  Over 100 000 volunteers were involved, classifying over one million galaxies @lintottGalaxyZoo12011.  The Galaxy Zoo classifications for nearly 500 000 galaxies are one of the datasets available to this project. However, the sheer quantity of data about to arrive from the Vera C Rubin telescope means that even this approach will not be sufficient and automated machine learning methods are now required.  The available data will determine which machine learning methods are appropriate for the task.
+
+Three main data sources are generally available from galaxy surveys, images (already discussed), spectra and tabulated data.  A Spectrum of a galaxy is obtained by splitting the light from the galaxy into its component wavelengths (similar to how a rainbow forms). The spectrum encodes information about the composition of the matter that produced the light and importantly how fast the galaxy is moving away from us (its redshift).  Edwin Hubble, through his observation of galaxies, that every galaxy seemed to be moving away from us (evidence that the universe was expanding) and that galaxies that were further away were receding faster @hubbleRealmNebulae1982 which shifts the light we observe toward the red part of the electromagnetic spectrum.  Analysis of the spectra and images can be stored in tables yielding a tabulated dataset which includes measurements such as the brightness in different 'colour' bands, the size of the galaxy, its redshift, etc.  The SDSS dataset includes spectra and tabulated data for roughly 500 000 galaxies, while a similar number of images have been sourced from the DESI Legacy Survey @collaborationNineteenthDataRelease2025@deyOverviewDESILegacy2019.  Now that we have some understanding of the available data, we can consider the machine learning methods that are suitable for galaxy classification.
+
+Machine learning methods such as deep learning algorithms lend themselves to the images and spectra datasets while traditional machine learning methods such as Random Forests are more suited to the tabulated data.  Each of these methods have their strengths and weaknesses. Deep Learning models such as Convolutional Neural Networks (CNNs) are excellent at using images for classification tasks particularly because they can cope with variation in the position, size and orientation of the object in the image.  They have been successfully used to classify galaxies using telescope images @cavanaghMorphologicalClassificationGalaxies2021. Spectral data is often processed using another variant of Deep Learning, a Long-Short Term Memory algorithm (LSTM). Both deep learning models can process the data with limited preparation. However, Deep Learning models are computationally intensive to train and often require specialised computer processors such as Graphics Processing Units (GPUs) are are not only expensive also consume significant amounts of power.  Random Forrests on the other hand are much less computationally intensive to train and can run efficiently on standard computers but significant processing is required to calculate and tabulate the data before a Random Forest can work with it.  It is not clear which of these methods, or even combination of methods, is best suited to automated galaxy classification and this is the reason for this project.  In addition there are complicating factors in the datasets that need to be considered.  This will be discussed below.
+
+# Problem identification
+
+In the previous section we discussed that if we could obtain a clear image of a galaxy then we can classify it.  The problem is obtaining a clear image of a galaxy is not that easy.  Galaxies that are very far away, appear as small blobs in images and images of two similar galaxies can still appear quite different due to the red-shift.  Simply throwing images at a machine learning algorithm with no thought or provision of contextual data is unlikely to result in success. Further work is required to understand what data is required for effective galaxy classification. While determining what data is important, some consideration of the Vera C. Rubin Observatory's design needs to be considered to understand what data will be available in the future.
+
+The Vera C. Rubin Observatory will not have any spectrographic capability and will generate images and image based tabular data only.  While existing spectrographic datasets can be used to supplement data from the Vera C. Rubin Observatory, this is only possible for galaxies that have already been observed.  Given that the new telescope will be discovering many new galaxies, it is unwise to rely on spectrographic data.  Further work is required to determine if the spectrographic data is required or if images and image derived data is sufficient.  Even if the right data is available, understanding how it can be efficiently acquired and processed is another important consideration.
+
+The datasets available for this project are large and some thought is required on how to process the daily data stream from the Vera C. Rubin Observatory.  The combined size of the datasets in this project are over 90GB and took over 12 hours to download before any processing could be done.  The new telescope is expected to generate 20TB of data per night @RubinObservatory and downloading, storing and processing this data will be a significant challenge.  The design of an automated data processing pipeline that can efficiently acquire, process and store the results is an important aspect of this project.
+
+# Objectives (50 words minimum)
+
+This project aims to:
+
+* Determine the necessary data requirements for accurate galaxy morphology classification e.g. images, spectra, tabulated data or a combination of these
+
+* Determine a set of metrics for comparing the performance of machine learning methods for galaxy morphology classification e.g. classification accuracy, speed (galaxies classified per hour per computing unit) and 'computational effort'.
+
+* Evaluate the performance existing machine learning methods using the three datasets to determine 
+
+* Determine the most efficient galaxy classification method or combination of methods and the most important measurements that the machine learning models rely on from the datasets
+
+* Design and test an automated galaxy classification data pipeline that acquires new galaxy images, classifies them and inserts the results into a database
+
+# Proposed solution
+
+To meet the objectives of this project I am proposing a series of experiments is carried out.  The experiments will train and evaluate several types of machine learning models using the datasets and methods that have been discussed above.  In each experiment, galaxy classification models will be trained using a subset of the available data, e.g. images only, images plus select tabulated data, etc.  Each classifier will be evaluated using a set of metrics that include classification accuracy, classification speed and computational effort (to prepare the data and train the model). The results of the experiments will be analysed to determine the optimal data requirements and the most efficient method or combination of methods. The best models will be incorporated into an automated processing pipeline which will be evaluated for its effectiveness and performance. The outcomes of this work will provide valuable insights into the data requirements and machine learning methods that are best suited to automated galaxy classification.  Additionally, the project will quantify the computational resources required to process a simulated datastream from telescopes such as the Vera C. Rubin Observatory. This knowledge will ultimately lead to high performance, automated galaxy classification enabling astronomers and cosmologists to better understand how galaxies form and evolve and ultimately improve our understanding of the universe.
+
+# References
+
+::: {#refs}
+:::
+
+
