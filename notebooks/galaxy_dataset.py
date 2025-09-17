@@ -11,9 +11,13 @@ class GalaxyDataset(Dataset):
         self.image_dir = image_dir
         self.transform = transform
 
+
         # Encode class labels to integers
         self.label_encoder = LabelEncoder()
         self.labels = self.label_encoder.fit_transform(self.df["class"])
+
+    def __len__(self):
+        return len(self.df)
 
     def __getitem__(self, idx):
         objid = self.df.iloc[idx]["objid"]
@@ -31,3 +35,5 @@ class GalaxyDataset(Dataset):
 
         label = self.labels[idx]
         return image, label
+
+
