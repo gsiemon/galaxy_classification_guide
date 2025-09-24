@@ -11,7 +11,6 @@ class GalaxyDataset(Dataset):
         self.image_dir = image_dir
         self.transform = transform
 
-
         # Encode class labels to integers
         self.label_encoder = LabelEncoder()
         self.labels = self.label_encoder.fit_transform(self.df["class"])
@@ -21,7 +20,7 @@ class GalaxyDataset(Dataset):
 
     def __getitem__(self, idx):
         objid = self.df.iloc[idx]["objid"]
-        image_path = os.path.join(self.image_dir, f"{objid}.jpeg")
+        image_path = os.path.join(se.lf.image_dir, f"{objid}.jpeg")
 
         try:
             # Native torchvision loading
@@ -35,5 +34,3 @@ class GalaxyDataset(Dataset):
 
         label = self.labels[idx]
         return image, label
-
-
