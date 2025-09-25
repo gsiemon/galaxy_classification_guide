@@ -26,9 +26,14 @@ format:
         header-includes: 
           - | 
             \usepackage[super]{nth}
+        include-before-body: 
+            text: |
+                \pagenumbering{roman}
 bibliography: Data7901.bib
 csl: ieee.csl
 ---
+\clearpage
+\pagenumbering{arabic}
 # Introduction
 
 ```{python}
@@ -128,7 +133,10 @@ Outline the expected time frames for the semester perhaps include an Gantt chart
 ![Project Gantt chart](images/galaxy_classification_timeline.pdf){#fig-project_gantt_chart width=150%}
 
 # Costs
-This project does not incur any direct financial costs.  The datasets are all freely available and open source software will be used for the data processing, machine learning evaluation and reporting.  The computer hardware required for the project is already owned by me and available. The software used for cloud backups an the associated storage costs are less than 20 cents per month which I am happy to pay.  The main cost of the project is my time.  I am budgeting approximately 130 hours during Semester 1 2026 to complete this project.  The project supervisors time is an additional cost, I am budgeting approximately 1 hour per week for supervision and advice. 
+This project does not incur any direct financial costs.  The datasets are all freely available and open source software will be used for the data processing, machine learning, evaluation and reporting.  The computer hardware required for the project is already owned by me and available for this project. The software used for cloud backups is already licenced for my own personal use and the incremental storage costs for this project are less than 20 cents per month.  I am happy to pay the backup costs for my own peace of mind.  The main cost for the project is my time.  I am budgeting approximately 130 hours during Semester 1 2026 to complete this project.  I am budgeting approximately 1 hour per week for supervision and advice plus an additional 5 hours for marking of assessment that may be required in DATA7903. 
+
+# Qualifications
+I have a Bachelor of Engineering (Chemical) Hons Class 1 and Bachelor of Science (Computer Science) from the University of Queensland.  I have over 25 years of experience in the oil and gas industry as a process engineer.  For much of that time I was working with large industrial datasets but lacked the tools to handle them effectively.  In 2016 I started working on a PhD project focused on energy optimisation within the steel industry.  While working on the PhD I taught myself R and also a lot of data science and machine learning skills.  Unfortunately, I was unable to complete the PhD.  Between 2021 and 2025 I worked on a new Hydrocarbon Accounting business process for Origin Energy's coal seam gas division.  This involved signficant data wrangling and analysis from a variety of internal data sources to not only identify data quality issues but also define the requirements for a new system to supprt the business process.  Many of the datasets I was working with had millions of rows and hundreds of columns.  This is my second semester of the Master of Data Science degree and I expect to complete the program at the end of Semester 1 2026.  I achieved four sevens in my first semester courses.  I've had a long interest in astronomy and cosmology and was an active member of a school Astronomy club.  In 2017 I helped a friend to fit out an observatory for Brisbane Girls Grammar School with three telescopes including professional grade cameras and telescopes.  I have the necessary skills and experience to complete this project successfully. 
 
 # References
 
