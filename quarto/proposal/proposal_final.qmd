@@ -20,7 +20,6 @@ format:
         linestretch: 1.5
         number-sections: true
         toc: true
-        lot: true
         lof: true
         appendix-style: default
         include-in-header:
@@ -28,9 +27,21 @@ format:
         header-includes: 
           - | 
             \usepackage[super]{nth}
+            \usepackage{chngcntr}
         include-before-body: 
             text: |
                 \pagenumbering{roman}
+        include-after-body: 
+            text: |
+                \clearpage % Ensure appendix starts on a new page (optional, but good practice)
+                \appendix
+                % Redefine the figure numbering format
+                \renewcommand{\thefigure}{\Alph{section}.\arabic{figure}}
+                % Tell LaTeX to reset the figure counter at every new section
+                \counterwithin{figure}{section}
+                % Repeat for tables (recommended)
+                \renewcommand{\thetable}{\Alph{section}.\arabic{table}}
+                \counterwithin{table}{section}
         maketitle: false
 bibliography: Data7901.bib
 csl: ieee.csl
@@ -70,13 +81,13 @@ It is generally easy for a human to classify a galaxy from its shape, if we can 
 
 ### Galaxy Images
 
-Three main data sources are generally available for galaxy classification from galaxy surveys, images, spectra and tabulated data. I mentioned above that we can classify galaxies if clear images are available. Obtaining good quality images, requires the use of a large telescope to collect a lot of light from the target galaxy and a sensitive camera. The process of obtaining a clear image is significantly more complicated than just pointing the telescope at the sky and triggering the camera @surveyDataReleaseDescription2023.  The most important aspect of the imaging process is that astronomy cameras only take black and white images. A colour image is assembled from multiple photographs taken through filters eg red, green and blue but often different infrared or ultraviolet wavelengths are required. The filters pass light in a narrow band centred around a particular wavelength of light. Astronomer's refer to each band using a letter (sometimes a letter and number). For example, the DESI Legacy survey images use the bands g (green-blue light), r (red) and z (near-infrared). The images may be combined to create a colour or often a false colour image if the images are not made up of red, green and blue filter photographs. An image directly out of the camera contains multiple objects such as stars and galaxies and also asteroids and satellites. An automated image processing pipeline is use to identify and isolate the individual objects in the image to output a separate image for each object @surveyDataReleaseDescription2023.  The images are generally quite small e.g. the ones in this project are 256 x 256 pixels with three 'colour' channels per pixel. The specialised camera pixels are designed in a way that they can precisely measure the brightness of an object and therefore the amount of light it is emitting (if we know how far away it is) @bessellStandardPhotometricSystems2005. This is important as objects of the same inherent brightness appear dimmer as the distance from the observer increases. Data acquired in this way is known as photometric data. The DESI Legacy Survey provides images of approxmately 475 000 galaxies @deyOverviewDESILegacy2019 and the SDSS dataset contains photometric measurements @ollaborationNineteenthDataRelease2025.  I'll now discuss the second type of data available for galaxy classification, spectra.
+Three main data sources are generally available for galaxy classification from galaxy surveys, images, spectra and tabulated data. I mentioned above that we can classify galaxies if clear images are available. Obtaining good quality images, requires the use of a large telescope to collect a lot of light from the target galaxy and a sensitive camera. The process of obtaining a clear image is significantly more complicated than just pointing the telescope at the sky and triggering the camera @surveyDataReleaseDescription2023.  The most important aspect of the imaging process is that astronomy cameras only take black and white images. A colour image is assembled from multiple photographs taken through filters eg red, green and blue but often different infrared or ultraviolet wavelengths are required. The filters pass light in a narrow band centred around a particular wavelength of light. Astronomer's refer to each band using a letter (sometimes a letter and number). For example, the DESI Legacy survey images use the bands g (green-blue light), r (red) and z (near-infrared). The images may be combined to create a colour or often a false colour image if the images are not made up of red, green and blue filter photographs. An image directly out of the camera contains multiple objects such as stars and galaxies and also asteroids and satellites. An automated image processing pipeline is use to identify and isolate the individual objects in the image to output a separate image for each object @surveyDataReleaseDescription2023.  The images are generally quite small e.g. the ones in this project are 256 x 256 pixels with three 'colour' channels per pixel. The specialised camera pixels are designed in a way that they can precisely measure the brightness of an object and therefore the amount of light it is emitting (if we know how far away it is) @bessellStandardPhotometricSystems2005. This is important as objects of the same inherent brightness appear dimmer as the distance from the observer increases. Data acquired in this way is known as photometric data. The DESI Legacy Survey provides images of approximately 475 000 galaxies @deyOverviewDESILegacy2019 and the SDSS dataset contains photometric measurements @collaborationNineteenthDataRelease2025.  I'll now discuss the second type of data available for galaxy classification, spectra.
 
 ### Galaxy Spectra
-We've discussed that photographs use filters to image objects in certain light bands over a grid of pixels. Spectroscopy is the technique of measuring the amount of light emitted by an object across thousands of extremely narrow light bands at a single location @morisonIntroductionAstronomyCosmology2008. A galaxy's spectrum is obtained by splitting the light from the galaxy into its component wavelengths (similar to a rainbow). Light is collected by the telescope and directed onto a plate containing one optical fibre for each target object. Each plate has to be configured specifically for observing a particular section of the sky @morisonIntroductionAstronomyCosmology2008. The spectrum encodes information about the composition of the matter that produced the light @tojeiroRecoveringGalaxyStar2007. The composition of the galaxy indicates what types of stars are present and can be used to infer the galaxy classification.  Unfortunately, Spectral data is extremely costly relative to imaging data as it requires a large amount of observing time (up to 1000 times more than required for an image) in addition to the need to construct the optical fibre plates for each observation run @wuPredictingGalaxySpectra2020. The Vera C. Rubin telescope will not have any spectrographic capabilities and therefore this project will not rely directly on any spectral data.  Photometric data will be used instead to estimate the redshift of galaxies if necessary. The SDSS dataset includes spectra for the same 475 000 galaxies extracted from the DESI Legacy Survey dataset @collaborationNineteenthDataRelease2025, @deyOverviewDESILegacy2019. 
+We've discussed that photographs use filters to image objects in certain light bands over a grid of pixels. Spectroscopy is the technique of measuring the amount of light emitted by an object across thousands of extremely narrow light bands at a single location @morisonIntroductionAstronomyCosmology2008. A galaxy's spectrum is obtained by splitting the light from the galaxy into its component wavelengths (similar to a rainbow). Light is collected by the telescope and directed onto a plate containing one optical fibre for each target object. Each plate has to be configured specifically for observing a particular section of the sky @morisonIntroductionAstronomyCosmology2008. The spectrum encodes information about the composition of the matter that produced the light @tojeiroRecoveringGalaxyStar2007. The composition of the galaxy indicates what types of stars are present and can be used to infer the galaxy classification.  Unfortunately, Spectral data is extremely costly relative to imaging data as it requires a large amount of observing time (up to 1000 times more than required for an image) in addition to the need to construct the optical fibre plates for each observation run @wuPredictingGalaxySpectra2020. The Vera C. Rubin telescope will not have any spectrographic capabilities and therefore this project will not rely directly on any spectral data.  Photometric data will be used instead to estimate the redshift of galaxies if necessary. The SDSS dataset includes spectra for the same 475 000 galaxies extracted from the DESI Legacy Survey dataset @collaborationNineteenthDataRelease2025, @deyOverviewDESILegacy2019. Calculated data from images and spectra is often stored in tabulated form and is discussed next.
 
 ### Tabulated Galaxy Datasets
-The Galaxy Zoo dataset is an important tabulated dataset.  It contains the number of votes from project volunteers for each class as shown in @fig-galaxy_zoo_morphology @lintottGalaxyZoo12011, @lintottGalaxyZooMorphologies2008.  Having the class votes for each galaxy means it is not only possible to determine the most likely class but also the collective confidence in that classification by the volunteers. @fig-plot-class-distribution and @fig-plot-difficulty-distribution show the class and classification distributions using a simplified set of categories chosen to try to quickly get an understanding of the dataset and how it might be used in this project. The majority class for each galaxy in the Galaxy Zoo dataset will be the source of truth when training machine learning models.  Three example images that have been classified as spiral, eliptical and other (the simple set of classes this classification project will start with) are shown in @fig-example-galaxy-images. The SDSS and DESI Legacy Survey datasets also contain tabulated data derived from the images and spectra that may be useful as features for machine learning models which will be discussed shortly but first we need to discuss the concept of redshift.
+The Galaxy Zoo dataset is an important tabulated dataset, containing the number of votes from project volunteers for each class as shown in @fig-galaxy_zoo_morphology @lintottGalaxyZoo12011, @lintottGalaxyZooMorphologies2008.  Having the class votes for each galaxy means it is not only possible to determine the most likely class but also the collective confidence in that classification by the volunteers and I have analysed the dataset by difficulty of classification. If a large fraction (>75%) of the volunteers agreed on the majority class then the classification difficulty is labelled easy. It labelled hard if there is a spread of votes across and the majority class is less than 50% of the total. Moderate is assigned if its between easy and hard.  @fig-plot-class-distribution and @fig-plot-difficulty-distribution show the class and classification difficulty distributions using a simplified set of categories chosen to try to quickly get an understanding of the datasets and how it might be used in this project. The majority class for each galaxy in the Galaxy Zoo dataset will be the source of truth when training machine learning models.  Three example images that have been classified as spiral, elliptical and other (the simple set of classes this classification project will start with) are shown in @fig-example-galaxy-images. The SDSS and DESI Legacy Survey datasets also contain tabulated data derived from the images and spectra that may be useful as features for machine learning models which will be discussed shortly but first we need to discuss the concept of redshift.
 
 ::: {#fig-example-galaxy-images layout-ncol=3}
 
@@ -86,17 +97,18 @@ The Galaxy Zoo dataset is an important tabulated dataset.  It contains the numbe
 
 ![Other](images/1237649918432116906.jpeg){#fig-other}
 
-Example of DESI Legacy Survey images of galaxies classified as (a) Eliptical, (b) Spiral and (c) Other by the Galaxy Zoo project as found in the SDSS dataset @deyOverviewDESILegacy2019, @lintottGalaxyZoo12011, @collaborationNineteenthDataRelease2025.
+Example of DESI Legacy Survey images of galaxies classified as (a) Elliptical, (b) Spiral and (c) Other by the Galaxy Zoo project as found in the SDSS dataset @deyOverviewDESILegacy2019, @lintottGalaxyZoo12011, @collaborationNineteenthDataRelease2025.
 :::
 
 ```{python}
-#| label: load_data
+# | label: load_data
 
 con = duckdb.connect(database="../../input/database/sdss.duckdb", read_only=False)
 
 df = con.execute(
     """SELECT DISTINCT
     obj.objid, 
+    spectra.z as spec_z,
     zoo.*, 
     photoz.*,
     CASE
@@ -108,14 +120,20 @@ df = con.execute(
         WHEN GREATEST(p_el, p_cs, p_other) >= 0.75 then 'easy'
         WHEN GREATEST(p_el, p_cs, p_other) < 0.5 then 'hard'
         ELSE 'moderate'
-    END AS difficulty
+    END AS difficulty,
+    CASE
+        WHEN p_el >= p_cs AND p_el >= p_other then p_el
+        WHEN p_cs >= p_el AND p_cs >= p_other then p_cs
+        ELSE p_other
+    END AS class_proportion
     FROM objects AS obj
     JOIN zoo ON obj.objid = zoo.objid
     JOIN photoz ON obj.objid = photoz.objid
+    JOIN spectra ON obj.objid = spectra.objid
     WHERE 
     nvote_tot IS NOT NULL AND
-    z IS NOT NULL AND
-    Z > 0 AND Z <=0.2
+    spectra.z IS NOT NULL AND
+    spectra.z > 0 AND spectra.z <=0.2
  """
 ).pl()
 
@@ -143,50 +161,72 @@ plt.ylabel("Number of Galaxies")
 sns.countplot(x="difficulty", data=df, order=order_difficulty)
 ```
 
-Redshift is therefore a complicating factor in galaxy classification and needs to be considered when designing an automated classification system. Edwin Hubble, through his observation of galaxies, showed that every galaxy appeared to moving away from Earth and that galaxies that were further away were receding faster @hubbleRealmNebulae1982. Hubble's observations were evidence that the universe was expanding. The rate at which a galaxy is receding from Earth shifts the light we observe toward the red part of the electromagnetic spectrum i.e. the spectrum is redshifted. This means that two otherwise similar galaxies that are at different distances from the Earth will have different spectra and also differences in their images, the one further away will be 'redder'.  A good example of how redshift affects spectra can been seen in @fig-redshift-vega-spectra which shows the spectra (blue) of a the star Vega if we were to observe the star Vega from close by (redshift = 0) @235RegressionPhotometric. Most of the light being emitted would be collected in an image using a u (utraviolet) or a g (green) filter.  It the star is far away (redshift = 0.8), the spectra would be measured as the red line. The light emitted from the star has been shifted toward the red end of the spectrum by the expansion of the space between the star and the Earth and the light received by a camera would now see the peak light emissions through an i (infrared) filter. Now that we have some understanding of the available data, we can consider the machine learning methods that are suitable for galaxy classification.
+Redshift is therefore a complicating factor in galaxy classification and needs to be considered when designing an automated classification system. Edwin Hubble, through his observation of galaxies, showed that every galaxy appeared to moving away from Earth and that galaxies that were further away were receding faster @hubbleRealmNebulae1982. Hubble's observations were evidence that the universe was expanding. The rate at which a galaxy is receding from Earth shifts the light we observe toward the red part of the electromagnetic spectrum i.e. the spectrum is redshifted. This means that two otherwise similar galaxies that are at different distances from the Earth will have different spectra and also differences in their images, the one further away will be 'redder'.  A good example of how redshift affects spectra can been seen in @fig-redshift-vega-spectra which shows the spectra (blue) of a the star Vega if we were to observe the star Vega from close by (redshift = 0) @235RegressionPhotometric. Most of the light being emitted would be collected in an image using a u (ultraviolet) or a g (green) filter.  It the star is far away (redshift = 0.8), the spectra would be measured as the red line. The light emitted from the star has been shifted toward the red end of the spectrum by the expansion of the space between the star and the Earth and the light received by a camera would now see the peak light emissions through an i (infrared) filter. Now that we have some understanding of the available data, we can consider the machine learning methods that are suitable for galaxy classification.
 
 ![Calculated spectrum of the star Vega at different redshifts. Corresponding image filter bands are indicated in grey. @235RegressionPhotometric](images/plot_sdss_filters_21.png){#fig-redshift-vega-spectra}
 
 ## Machine Learning Methods for Galaxy Classification
 
-Machine learning methods such as deep learning algorithms lend themselves to the images and spectra datasets while traditional machine learning methods such as Random Forests or Nearest neighbour models are more suited to the tabulated data @LindholmAndreas2022Ml:a.  Each of these methods have their strengths and weaknesses. Deep Learning models such as Convolutional Neural Networks (CNNs) are excellent at using images for classification tasks particularly because they can cope with variation in the position, size and orientation of objects in an image.  They have been successfully used to classify galaxies using telescope images @cavanaghMorphologicalClassificationGalaxies2021.  One of the key parameters in a CNN is the number of processing layers in the model @LindholmAndreas2022Ml:a.  More layers generally means a more powerful model but it was found that after a certain number of layers, the model performance degrades.  Residual Networks (ResNets) were developed to overcome this problem by adding 'skip connections' that allow the model to have a large number of layers without the performance issues. The ResNet50 model (with 50 layers) has been successfully used for galaxy classification @heClassificationGalaxyMorphology2023a. Deep learning models such as CNNs and ResNets have an additional advantage in that pretrained models are available that have been trained on very large image datasets @Resnet50TorchvisionMain.  Pretrained models can be fine-tuned for a specific task using a much smaller dataset that would otherwise be required to train an effective model from scratch. This process is called transfer learning and has been successfully used for galaxy classification @andrewGalaxyClassificationUsing2023. A proof of concept image classifier has been trained using the ResNet50 model and is discussed in the Appendix. Deep learning models may also lend themselves to can spectral data given the large number of measurements in each one but further work is required to understand which ones may be useful. The main issue with deep learning models is they are computationally intensive to train and often require specialised computer processors such as Graphics Processing Units (GPUs) are are not only expensive to purchase also consume significant amounts of electricity during operation. Traditional machine learning models such as Random Forests on the other hand are much less computationally intensive to train and can run efficiently on standard computers but significant processing may be required to calculate and tabulate the necessary data (feature selection) before a model can be trained.  It is not clear which of these methods, or even combination of methods, is best suited to automated galaxy classification and this is the reason for this project. This is why this project is important.  However, there is a signficant issue with machine learning and deep learning methods that needs to be considered, these algorithms can only classify objects into the classes they have been asked to find in the training data.
+Machine learning methods such as deep learning algorithms lend themselves to the images and spectra datasets while traditional machine learning methods such as Random Forests or Nearest neighbour models are more suited to the tabulated data @LindholmAndreas2022Ml:a.  Each of these methods have their strengths and weaknesses. Deep Learning models such as Convolutional Neural Networks (CNNs) are excellent at using images for classification tasks particularly because they can cope with variation in the position, size and orientation of objects in an image.  They have been successfully used to classify galaxies using telescope images @cavanaghMorphologicalClassificationGalaxies2021.  One of the key parameters in a CNN is the number of processing layers in the model @LindholmAndreas2022Ml:a.  More layers generally means a more powerful model but it was found that after a certain number of layers, the model performance degrades.  Residual Networks (ResNets) were developed to overcome this problem by adding 'skip connections' that allow the model to have a large number of layers without the performance issues @heDeepResidualLearning2016. The ResNet50 model (with 50 layers) has been successfully used for galaxy classification @heClassificationGalaxyMorphology2023a. Deep learning models such as CNNs and ResNets have an additional advantage in that pre-trained models are available that have been already trained on very large image datasets @paszkePyTorchImperativeStyle2019. Pre-trained models can perform well out-of-the-box and be fine-tuned for a specific task using a much smaller dataset that would be required to train a model from scratch. This process is called transfer learning and has been successfully used for galaxy classification @andrewGalaxyClassificationUsing2023. A proof of concept image classifier has been trained using the ResNet50 model and is discussed in the Appendix. However, deep learning models have some downsides and they will be discussed next.
 
+The training of deep learning models is computationally intensive, often requiring specialised computer processors such as Graphics Processing Units (GPUs) that are expensive to purchase and consume significant amounts of electricity during operation. Traditional machine learning models such as Random Forests on the other hand are much less computationally intensive to train and can run efficiently on standard computers but significant processing may be required to calculate and tabulate the necessary data (feature selection) before a model can be trained.  It is not clear which of these methods, or even combination of methods, is best suited to automated galaxy classification and this is the reason for this project. This is why this project is important.  However, there is a significant issue with machine learning and deep learning methods that needs to be considered, these algorithms can only classify objects into the classes they have been asked to find in the training data.
+
+Deep learning models may also lend themselves can spectral data given the large number of measurements in each one but further work is required to understand which ones may be useful.  The Vera C. Rubin telescope with not have any spectroscopic capability and therefore investigating options for spectral data has not been a priority. 
 
 The models described above are examples of supervised machine learning where a model is trained to categorise objects based on a set of predefined classes (labels). The model learns to associate features in the data with the labels. If the model comes across data that doesn't fit into one of the predefined classes, it will still try to classify it using one of the labels it has been trained on.  This is a significant issue as there may be objects in the data that should have a new label. During the Galaxy Zoo project, volunteers uncovered a type of object that appears to be a new type of galaxy that were named 'Green Peas' due to their resemblance to a pea @cardamoneGalaxyZooGreen2009.  This is one area where human classifiers have an advantage over machine learning models.  Astronomers and cosmologists are interested in finding objects like 'Green Peas' that do not fit into existing classifications as they may provide new insights into how the universe works. This brings us to the concept of unsupervised machine learning models where the model is not given any information about the classes in the data and is instead trying to group similar objects together based on their features @LindholmAndreas2022Ml:a.
 
-Unsupervised learning methods such as clustering algorithms couple with methods to reduce the number of dimensions present in the datasets may be useful for identifying 'outliers' in the data that do not fit well with existing classes.  Outliers may be either data errors or new types of objects.
-
-
-In addition there are complicating factors in the datasets that need to be considered.  This will be discussed below.
+Unsupervised learning methods such as clustering algorithms couple with methods to reduce the number of dimensions present in the datasets may be useful for identifying 'outliers' in the data that do not fit well with existing classes.  Outliers may be either data errors or new types of objects.  Clustering algorithms may be useful in grouping 'similar' data together, allowing clusters of points that sit far away from the 'normal' galaxies to be identified and investigated. It is likely that a combination of supervised and unsupervised learning methods will be required to effectively classify galaxies and identify new types of objects.  Clustering methods can also be used to organise data in a new generation of databases called vector databases that have been developed to store and query high dimensional data such as images and spectra @abdelazizAutomaticDetectionGalaxy2017.  The database indexes lend themselves to nearest neighbour searches which is a simple but effective machine learning method.  This project will consider if vector databases are useful for galaxy classification either in assisting with the classification directly or as a way of storing and retrieving the data in a more efficient way.
 
 # Problem identification
 
-In the previous section we discussed that if we could obtain a clear image of a galaxy then we can classify it.  The problem is obtaining a clear image of a galaxy is not that easy.  Galaxies that are very far away, appear as small blobs in images and images of two similar galaxies can still appear quite different due to the red-shift.  Simply throwing images at a machine learning algorithm with no thought or provision of contextual data is unlikely to result in success. Further work is required to understand what data is required for effective galaxy classification. While determining what data is important, the Vera C. Rubin Observatory's design needs to be considered to understand what data will be available in the future.
+In the previous section we discussed that if we could obtain a clear image of a galaxy then we can classify it.  The problem is obtaining a clear image of a galaxy is not that easy.  Galaxies that are very far away, appear as small blobs in images and images of two similar galaxies can still appear quite different due to redshift.  Simply throwing images at a machine learning algorithm with no thought or provision of contextual data is unlikely to result in success. Further work is required to understand what data is required for effective galaxy classification. While determining what data is important, the Vera C. Rubin Observatory's design needs to be considered to understand what data will be available in the future particularly what filter it will use to capture its images and the size of the individual images.  It is expected that the Vera C. Rubin Observatory will use six filters (u, g, r, i, z and y) @LSSTFiltersSDSS2017.  The DESI Legacy Survey images used in this project were captured using three filters (g, r and z) @deyOverviewDESILegacy2019 so the models will have to use those bands and will not initially be able to take advantage of the telescopes additional capabilities.
 
-The Vera C. Rubin Observatory will not have any spectrographic capability and will generate images and image based tabular data only.  While existing spectrographic datasets can be used to supplement data from the Vera C. Rubin Observatory, this is only possible for galaxies that have already been observed.  Given that the new telescope will be discovering many new galaxies, it is unwise to rely on spectrographic data.  Further work is required to determine if the spectrographic data is required or if images and image derived data is sufficient.  Even if the right data is available, understanding how it can be efficiently acquired and processed is another important consideration.
-
-The datasets available for this project are large and some thought is required on how to process the daily data stream from the Vera C. Rubin Observatory.  The combined size of the datasets in this project are over 90GB and took over 12 hours to download before any processing could be done.  The new telescope is expected to generate 20TB of data per night @RubinObservatory and downloading, storing and processing this data will be a significant challenge.  The design of an automated data processing pipeline that can efficiently acquire, process and store the results is an important aspect of this project.
+The datasets available for this project are large and some thought is required on how to process the daily data stream from the Vera C. Rubin Observatory.  The combined size of the datasets in this project are over 90GB and took over 12 hours to download before any processing could be done.  The new telescope is expected to generate 20TB of data per night @RubinObservatory and downloading, storing and processing this data will be a significant challenge.  The design of an automated data processing pipeline that can efficiently acquire, organise, process and store the classification results is an important aspect of this project. Having a high-performance galaxy classification system that can efficiently process data acquired by next-generation telescopes will allow cosmologists to test existing models of galaxy formation as well as evolutionary models of the universe. More data may lead to discoveries such as the 'Green Peas' and this may further our understanding of what the universe is the way it is.  This leads us to the project objectives.
 
 # High-performance automated galaxy classification project objectives 
 
 This project aims to:
 
-* Determine the necessary data requirements for accurate galaxy morphology classification e.g. images, spectra, tabulated data or a combination of these
+* Determine the necessary data requirements for accurate galaxy morphology classification e.g. images or tabulated data or a combination of these
 
-* Determine a set of metrics for comparing the performance of machine learning methods for galaxy morphology classification e.g. classification accuracy, speed (galaxies classified per hour per computing unit) and 'computational effort'.
+* Define a set of metrics for comparing the performance of machine learning methods for galaxy morphology classification e.g. classification accuracy, speed (galaxies classified per hour per computing unit) and 'computational effort'.
 
-* Evaluate the performance existing machine learning methods using the three datasets to determine 
+* Build and Train existing machine learning methods using the datasets
 
-* Determine the most efficient galaxy classification method or combination of methods and the most important measurements that the machine learning models rely on from the datasets
+* Find the most efficient galaxy classification method or combination of methods using a test dataset (ideally from Vera C. Rubin) and the most important measurements that the machine learning models rely on from the datasets
 
-* Design and test an automated galaxy classification data pipeline that acquires new galaxy images, classifies them and inserts the results into a database
+* Design and test an automated galaxy classification data pipeline that acquires new galaxy data, stores/organises it, classifies the galaxies and inserts the results into a database
+
+These project objectives will be achieved through a series of experiments that will be outlined in the next section.
 
 # Proposed solution
 
-To meet the objectives of this project I am proposing a series of experiments is carried out.  The experiments will train and evaluate several types of machine learning models using the datasets and methods that have been discussed above.  In each experiment, galaxy classification models will be trained using a subset of the available data, e.g. images only, images plus select tabulated data, etc.  Each classifier will be evaluated using a set of metrics that include classification accuracy, classification speed and computational effort (to prepare the data and train the model). The results of the experiments will be analysed to determine the optimal data requirements and the most efficient method or combination of methods. The best models will be incorporated into an automated processing pipeline which will be evaluated for its effectiveness and performance. The outcomes of this work will provide valuable insights into the data requirements and machine learning methods that are best suited to automated galaxy classification.  Additionally, the project will quantify the computational resources required to process a simulated datastream from telescopes such as the Vera C. Rubin Observatory. This knowledge will ultimately lead to high performance, automated galaxy classification enabling astronomers and cosmologists to better understand how galaxies form and evolve and ultimately improve our understanding of the universe.
+To meet the objectives of this project I am proposing a series of experiments are carried out.  I will train and evaluate several types of machine learning models using the datasets and methods that have been discussed above.  In each experiment, galaxy classification models will be trained using a subset of the available data, e.g. images only, images plus select tabulated data, etc.  Each classifier will be evaluated using a set of metrics that include classification accuracy, classification speed and computational effort (to prepare the data and train the model). The results of the experiments will be analysed to determine the optimal data requirements and the most efficient method or combination of methods. The best models will be incorporated into an automated processing pipeline which will be evaluated for its effectiveness and performance. The outcomes of this work will provide valuable insights into the data requirements and machine learning methods that are best suited to automated galaxy classification.  Additionally, the project will quantify the computational resources required to process a simulated datastream from telescopes such as the Vera C. Rubin Observatory. This knowledge will ultimately lead to high performance, automated galaxy classification enabling astronomers and cosmologists to better understand how galaxies form and evolve and ultimately improve our understanding of the universe. The next section outlines the methodology that will be used to develop the project.
 
 # Method for Developing the Program
 
+This project will be split into several phases in line with the galaxy classification project objectives and the proposed solution discussed above. The project phases include finalisation of the dataset, dataset cleaning and feature extraction, definition of performance metrics, selection and construction of candidate machine learning models, training, tuning and evaluation of the machine learning models, analysis of results to select the best model(s), design and testing of an automated data processing pipeline and documentation of results. Each phase is discussed briefly below.
+
+## Data finalisation and cleaning
+Further work is required to determine which features will be useful for galaxy classification and whether or not the available data is fit for use. Appendix A identifies some unusual features in the data distributions that may be an artifact of the initial data selection or could be an indication that the observing program or classification program introduced biases into the data. Resampling of the data may be required to remove these biases. The datasets will be cleaned to remove any errors or missing data. Fortunately, the SDSS dataset has a large number of quality indicators in its tables along with comprehensive documentation @collaborationNineteenthDataRelease2025.  The datasets will be split into training, validation and test datasets prior to training the machine learning model. The test dataset will ideally be a dataset from the Vera C. Rubin Observatory but if this is not available, a subset of the SDSS dataset that has not been used in training or validation will be used instead. It is important that the test dataset is not used in any way during the training or validation of the models and that it is representative of the data that will be encountered in practice.  While this is being worked on, I will define the performance metrics that will be used to evaluate the models.
+
+## Definition of performance metrics and benchmarking
+A standardised set of performance metrics is required to evaluate the machine learning models.  The primary metric will be the accuracy of the classification i.e. the percentage of the galaxies that are correctly classified.  Given that multiple classes are involved it may be necessary to use more sophisticated measures of accuracy such as F1 Score @LindholmAndreas2022Ml:a.  Accuracy alone is not sufficient as a model that takes a long time to classify a galaxy may not be useful in practice.  Therefore, the speed of classification (galaxies classified per hour per computing unit) will also be measured. Some thought needs to go into how to compare models that are GPU based against CPU based models. The computational effort required to prepare the data and train the model will also be recorded.  A benchmark dataset will be defined that will be used to evaluate all models.
+
+## Selection and construction of machine learning models
+A range of machine learning models will be selected for evaluation.  The models will include deep learning models such as Convolutional Neural Networks (CNNs) and Residual Networks (ResNets) for image data and traditional machine learning models such as Random Forests and Nearest Neighbour models for tabulated data.  Unsupervised learning methods such as clustering algorithms may also be considered for identifying outliers in the data and may be of use in splitting the datasets so that specialised models can operate on different parts of the dataset.  Pre-trained deep learning models will be used where possible to take advantage of transfer learning. The models will be constructed using open source libraries such as PyTorch and Scikit-learn @paszkePyTorchImperativeStyle2019, @pedregosaScikitlearnMachineLearning2011. Once the models have been constructed, they will be trained, tuned to maximise their performance and evaluated using the test dataset and the performance metrics defined earlier.
+
+## Training and evaluation of machine learning models
+The models will be trained using the training dataset and their performance will be evaluated during the tuning phase using cross-validation. Once the model performance has been maximised, the models will be evaluated using the test dataset and the performance metrics defined earlier. The results of the evaluations will be recorded for analysis.
+
+## Analysis of results and selection of best model(s)
+Results analysis will use a weighting system to ensure that the most important metrics (eg accuracy) are given the most emphasis.  The best candidate models will be analysed to determine the optimal data requirements and the most efficient method or combination of methods.  
+
+## Design and testing of automated data processing pipeline
+The selected machine learning model(s) and their associated data preparation and model tuning steps will be incorporated into an automated data processing pipeline.  The pipeline will be designed to acquire new galaxy data, store/organise it, classify the galaxies and insert the results into a database.  The pipeline will be tested for its effectiveness and performance using a simulated datastream from the Vera C. Rubin Observatory. All that is left after this is to document the process and the results.
+
+## Documentation of results and preparation of reports and presentations
+Interim and final reports and presentations will be prepared to document the results of the galaxy classification project.  The reports and presentations will be prepared using Quarto which allows the integration of code, results and narrative text in a single document @allaireQuarto2025 and anyone with the data should be able to reproduce the results.  The reports and presentations will be shared with the academic supervisors and other interested parties. 
 
 # Resources
 
@@ -201,27 +241,495 @@ Python is the primary programming language used for this project @vanrossumPytho
 
 The ability of anyone to easily replicate results and reports is embodied in the concept of Reproducible Research and its principles will be followed in this project @alstonBeginnersGuideConducting2021.  Quarto is a open source tool for creating documents, reports and presentations that can integrate code, results (including images and tables generated by code) and narrative text @allaireQuarto2025.  Quarto has been used for this document and will be used for all subsequent reports and presentations. The combination of Jupyter Notebooks, Python, Github and Quarto provides a powerful and flexible environment for developing, documenting and sharing the results of this project. All of the software and reports must be backed up to ensure that no work is lost.
 
-Backing up work is a critical activity to ensure that work is not lost and that project milestones are able to be met in the event that a computer fails or important documents are deleted or corrupted.  I have a comprehensive backup strategy on my Apple computers that stores local Apple Time Machine backups on network attached storage (NAS) at my home and offsite backups to Backblaze and Amazon S3 Deep Glacier cloud services. Time Machine and Backblaze store all changes to files allowing recovery of previous versions if necessary and data can be restored immediately.  Amazon S3 Deep Glacier is designed for long term archival of data and is not suitable for frequent restores but is a very low cost solution for long term storage of important data.  The combination of these three backup methods plus source code control via Github provides a robust and reliable backup solution for the project.    
+Backing up work is a critical activity to ensure that work is not lost and that project milestones are able to be met in the event that a computer fails or important documents are deleted or corrupted.  I have a comprehensive backup strategy on my Apple computers that stores local Apple Time Machine backups on network attached storage (NAS) at my home and offsite backups to Backblaze and Amazon S3 Deep Glacier cloud services. Time Machine and Backblaze store all changes to files allowing recovery of previous versions if necessary and data can be restored immediately.  Amazon S3 Deep Glacier is designed for long term archival of data and is not suitable for frequent restores but is a very low cost solution for long term storage of important data.  The combination of these three backup methods plus source code control via Github provides a robust and reliable backup solution for the project.  Next I will outline the schedule for the galaxy classification project.  
 
 # Schedule
-Outline the expected time frames for the semester perhaps include an Gantt chart.
+The project schedule is shown in the Gantt chart in @fig-project_gantt_chart. The galaxy classification project proposal phase is nearing completion. While further data analysis and background reading is required to fully understand the datasets, the project is on track and ready to implement at the commencement of Semester 1 2026 unless the project supervisors advise that work can begin earlier. The project implementation phase will commence at the end of February 2026 and run until the beginning of June 2026.  As discussed above the work has been split into a series of phases that align with the project objectives. The most time consuming phase is the training, tuning and evaluation of the machine learning models (particularly the deep learning models) which is scheduled to take approximately 4 weeks.  The final phase of the project is the documentation of the results and preparation of reports and presentations. Assessment milestones and requirements are not yet known for Semester 1, 2026 but I have allowed 3 weeks to complete the project report and presentation.  This should be sufficient time to complete the documentation phase of the project. During the scheduled work some costs will be incurred by the project which will be discussed in the next section.
 
 ![Project Gantt chart](images/galaxy_classification_timeline.pdf){#fig-project_gantt_chart width=150%}
 
 # Costs
-The high performance galaxy classification project does not incur any direct financial costs.  The datasets are all freely available and open source software will be used for the data processing, machine learning, evaluation and reporting.  The computer hardware required for the project is already owned by me and available for this project. The software used for cloud backups is already licensed for my own personal use and the incremental storage costs for this project are less than 20 cents per month.  I am happy to pay the backup costs for my own peace of mind.  The main cost for galaxy classification project is my time.  I am budgeting approximately 130 hours during Semester 1 2026 to complete this project.  I am budgeting approximately 1 hour per week for supervision and advice plus an additional 5 hours for marking of assessment that may be required in DATA7903. 
+The high performance galaxy classification project does not incur any direct financial costs.  The datasets are all freely available and open source software will be used for the data processing, machine learning, training evaluation and reporting.  The computer hardware required for the project is already owned by me and available for this project. The software used for cloud backups is already licensed for my own personal use and the incremental storage costs for this project are less than 20 cents per month.  I am happy to pay the backup costs for my own peace of mind.  The main cost for galaxy classification project is my time.  I am budgeting approximately 130 hours during Semester 1 2026 to complete this project.  I am budgeting approximately 1 hour per week for supervision and advice plus an additional 5 hours for marking of assessment that may be required in DATA7903. Lastly, there will be an electricity cost incurred when these models are trained.  This is difficult to estimate, but if I run these models at home where I have a large solar and battery storage system, the electricity cost is minimal.  If access to The University of Queensland's High-Performance Computing resources is granted, then the electricity cost will be borne by the university but I will still attempt to estimate it. Lastly, I will discuss my qualifications for undertaking this project.
 
 # Qualifications
-I have a Bachelor of Engineering (Chemical) Hons Class 1 and Bachelor of Science (Computer Science) from the University of Queensland.  I have over 25 years of experience in the oil and gas industry as a process engineer.  For much of that time I was working with large industrial datasets but lacked the tools to handle them effectively.  In 2016 I started working on a PhD project focused on energy optimisation within the steel industry.  While working on the PhD I taught myself R and also a lot of data science and machine learning skills.  Unfortunately, I was unable to complete the PhD.  Between 2021 and 2025 I worked on a new Hydrocarbon Accounting business process for Origin Energy's coal seam gas division.  This involved significant data wrangling and analysis from a variety of internal data sources to not only identify data quality issues but also define the requirements for a new system to support the business process.  Many of the datasets I was working with had millions of rows and hundreds of columns.  This is my second semester of the Master of Data Science degree and I expect to complete the program at the end of Semester 1 2026.  I achieved four sevens in my first semester courses.  I've had a long interest in astronomy and cosmology and was an active member of a school Astronomy club.  In 2017 I helped a friend to fit out an observatory for Brisbane Girls Grammar School with three telescopes including professional grade cameras and telescopes.  I have the necessary skills and experience to complete this project successfully. 
+I have a Bachelor of Engineering (Chemical) Hons. Class 1 and Bachelor of Science (Computer Science) from the University of Queensland and over 25 years of experience in the oil and gas industry as a process engineer.  For much of that time I was working with large industrial datasets but lacked the tools to handle them effectively.  In 2016 I started working on a PhD project focused on energy optimisation within the steel industry.  While working on the PhD I taught myself R and also a lot of data science skills particularly in data wrangling and machine learning skills.  Unfortunately, I was unable to complete the PhD but I have maintained the skills that I learnt during that time.  Between 2021 and 2025 I worked on a new business process and IT system for Origin Energy's coal seam gas division.  This involved significant data cleaning, processing and analysis from a variety of internal data sources to not only identify data quality issues but also define the requirements for the project.  Many of the datasets I was working with had millions of rows and hundreds of columns.  This is my second semester of the Master of Data Science degree and I expect to complete the program at the end of Semester 1 2026.  I achieved four sevens in my first semester courses.  I've had a long interest in astronomy and cosmology and was an active member of a school Astronomy club.  In 2017 I helped a friend to fit out an observatory for Brisbane Girls Grammar School with three telescopes including professional grade cameras and telescopes.  I have the necessary skills and experience to complete this project successfully. 
 
-# References
+# References {.unnumbered}
 
 ::: {#refs}
 :::
 
-# Appendices
+\renewcommand{\thesection}{\Alph{section}}
+\counterwithin{figure}{section}
 
+# Appendices {.appendix .unnumbered}
+
+## Dataset acquisition and cleaning
+
+Tabulated data was downloaded from the SDSS dataset via the CasJobs web interface @liCasJobsMyDBBatch2008.  The project supervisors recommended an initial set of filters via a query that constrained the data set to the following properties:
+
+* Magnitude (r-band): Between 10 and 17.7 (restricted to bright objects)
+* No warning flags from the Spectroscopic redshift calculation
+* Spectroscopic redshift (Z): Between 0.003333 and 0.15
+
+This was done to give a good quality set of data to start with.  These filters may have to be adjusted to ensure that they aren't biasing the dataset eg excluding certain classes due to brightness at a particular redshift.
+
+The SDSS dataset returned by CasJobs contained over 475 000 rows and was downloaded as a CSV file.  Additional queries were run, joining the spectra, photoall and photoz tables to the object table producing an additional three datasets.  The datasets were imported into a Jupyter notebook using Polars (a high performance alternative to Pandas), duplicate columns were removed and the tables were written to a DuckDB (a high performance in-process SQL database) to enable fast querying and joining of the datasets.  The objectid's for the target galaxies were written out to formatted text file that was used with the command line utility curl to download files from the SDSS spectra database and the DESI Legacy Survey image database using 20 threads.  Approximately 12 hours later, 10 GB of images and 80 GB of spectra data had been downloaded.  This is a key consideration for this project as downloading data is slow.  I will investigate if there is a faster way to acquire the data or alternatively suggest some ways the data could be made available more efficiently.  
+
+## Exploratory data analysis 
 
 ```{python}
+# | label: fig-plot-redshift-distribution-class
+# | fig-cap: Distribution of spectral redshift in the SDSS dataset by Galaxy Zoo category
 
+g = sns.FacetGrid(data=df, row="class", row_order=order_class, height=2, aspect=3)
+
+g.map(sns.histplot, "spec_z", binwidth=0.01, binrange=(0, 0.2))
+g.set_axis_labels("Redshift (z)", "Count")
+g.set_titles("{row_name}")
 ```
+
+The above plot shows the distribution of galaxies by redshift for each of the three classes. It appears that the elliptical galaxis in the samples are generally further away than the spiral galaxies. The 'other' category has a similar distribution with a peak at redshift = 0.075.  This suggests that these objects aren't just distant spiral or elliptical galaxies but something else e.g. merging galaxies or irregular galaxies. 
+
+I've used the Galaxy Zoo votes to determine how easy or difficult it was for volunteers to classify each galaxy. If the majority class received more than 75% of the votes, then the classification is considered 'easy'. If the majority class received less than 50% of the votes, then the classification is considered 'hard'.  Anything in between is considered 'moderate'. The distribution of galaxies by redshift for each of these categories is shown below.
+
+```{python}
+# | label: fig-plot-redshift-distribution-difficulty
+# | fig-cap: Distribution of spectral redshift dataset by ease of classification
+
+g = sns.FacetGrid(data=df, row="difficulty", row_order=order_difficulty, height=2, aspect=3)
+
+g.map(sns.histplot, "spec_z", binwidth=0.01, binrange=(0, 0.2))
+
+g.set_axis_labels("Redshift (z)", "Count")
+g.set_titles("{row_name}")
+```
+
+The above plot indicates indicates that there doesn't seem to be a relationship between redshift and the ease of classification.  This maybe because there are different numbers of galaxies at each redshift.  To investigate this further, the proportion of galaxies in each class at each redshift is shown below.
+
+```{python}
+# | label: fig-plot-redshift-fraction-class
+# | fig-cap: Fraction of galaxies in each Galaxy Zoo category versus redshift
+
+df_binned = df.with_columns(
+    [
+        pl.col("spec_z")
+        .map_batches(lambda x: (x * 100).round() / 100)
+        .alias("z_binned")  # Bin to 0.01 intervals
+    ]
+)
+
+# Calculate fraction of each class per redshift bin
+df_fractions = (
+    df_binned.group_by(["z_binned", "class"])
+    .agg(pl.count("objid").alias("count"))
+    .with_columns([pl.col("count").sum().over("z_binned").alias("total_per_bin")])
+    .with_columns([(pl.col("count") / pl.col("total_per_bin")).alias("fraction")])
+    .filter(pl.col("total_per_bin") >= 10)  # Filter bins with too few galaxies
+)
+
+# Create the FacetGrid plot
+g = sns.FacetGrid(
+    data=df_fractions, col="class", col_order=order_class, height=4, aspect=1.2
+)
+
+g.map(sns.lineplot, "z_binned", "fraction", marker="o", linewidth=2)
+
+g.set_axis_labels("Redshift (z)", "Fraction of Galaxies")
+g.set_titles("{col_name}")
+
+# Set consistent y-axis limits
+for ax in g.axes.flat:
+    ax.set_ylim(0, 1)
+    ax.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+In this dataset are the galaxies evenly distributed by redshift or are we more likely to see certain types of galaxies at certain redshifts?  The above plot creates 100 redshift bins and calculates the fraction of galaxies in each class in each bin.  The plotshows that at low redshift, spiral galaxies are more common but as redshift increases, elliptical galaxies become more common.  This may be because spiral galaxies are more difficult to see at higher redshifts (surface brightness?) or it may be that elliptical galaxies were more common in the early universe.  Further work is required to understand this.  
+
+```{python}
+# | label: fig-plot-redshift-distribution-difficulty-prop
+# | fig-cap: Proportion of votes for each class as a function of redshift
+
+g = sns.FacetGrid(data=df, row="class", row_order=order_class, height=2, aspect=3)
+
+g.map(
+    sns.kdeplot,
+    "spec_z",
+    "class_proportion",
+    kind="kde",
+    cmap="viridis",
+    levels=30,
+    fill=True,
+    bw_adjust=0.5,
+)
+
+g.set_axis_labels("Redshift (z)", "Proportion of votes")
+g.set_titles("{row_name}")
+```
+
+For each class what is the distribution of the proportion of votes each galaxy received as a function of redshift? Yellow indicates a high density of samples while dark blue indicates there are low density. Similar to the previous plot, spiral galaxies seem to be generally easy to classify (> 80% of people agree) at low redshift. There seem to be fewer spiral galaxies at higher redshift though.  Elliptical galaxies seem to be harder to classify at low redshift but easier at higher redshifts which is puzzling.  Further work is required to understand this. The 'other' category seems to be generally difficult to classify at all redshifts.  
+
+The datasets appear have some unusual distributions and I'll need to spend time trying to understand if this is a sample problem created by the initial set of filters, the Galaxy Zoo or SDSS or if it is something that is actually occuring in the universe. Imbalances in the data will need to be considered when selecting and training machine learning models otherwise we will find that the models do not generalise well when processing new data. Upsampling or downsampling of the datasets may be required to ensure that the models are not biased toward the more common classes.  However, if this is a real phenomenon then redshift is an important factor in galaxy classification.
+
+SDSS has used trained machine learning models to estimate the redshift from photometric data. Is photometric redshift (photoz) a good approximation for spectral redshift (z)?  The distribution of the difference between these two measurements is shown below. There is good agreement between the two measurements but there is quite a lot of scatter.  The SDSS photoz measurements table has some quality flags that may be useful to filter out poor quality estimates of the photometic redshift. Further work is required to understand if photoz is a good enough estimate of redshift for galaxy classification instead of using the spectroscopic redshift which is not available from the Vera C. Rubin Observatory.
+
+```{python}
+# | label: fig-plot-photoz-vs-z
+# | fig-cap: Comparison of Spectral Redshift (z) versus Photometric Redshift (photoz)
+
+df_filter = df.filter(pl.col("z") > 0, pl.col("spec_z") > 0)
+
+sns.kdeplot(
+    data=df_filter,
+    x="spec_z",
+    y="z",
+    fill=True,
+    cmap="viridis",
+    levels=30,
+    bw_adjust=0.5,
+)
+
+plt.xlabel("Spectral Redshift (z)")
+plt.ylabel("Photometric Redshift (photoz)")
+plt.xlim(0, 0.2)
+plt.ylim(0, 0.2)
+```
+
+```{python}
+# | label: fig-plot-redshift-fraction-class-photoz
+# | fig-cap: Fraction of galaxies in each Galaxy Zoo category versus photometric redshift
+
+df_binned = df_filter.with_columns(
+    [
+        pl.col("z")
+        .map_batches(lambda x: (x * 100).round() / 100)
+        .alias("z_binned")  # Bin to 0.01 intervals
+    ]
+)
+
+# Calculate fraction of each class per redshift bin
+df_fractions = (
+    df_binned.group_by(["z_binned", "class"])
+    .agg(pl.count("objid").alias("count"))
+    .with_columns([pl.col("count").sum().over("z_binned").alias("total_per_bin")])
+    .with_columns([(pl.col("count") / pl.col("total_per_bin")).alias("fraction")])
+    .filter(pl.col("total_per_bin") >= 10)  # Filter bins with too few galaxies
+)
+
+# Create the FacetGrid plot
+g = sns.FacetGrid(
+    data=df_fractions, col="class", col_order=order_class, height=4, aspect=1.2
+)
+
+g.map(sns.lineplot, "z_binned", "fraction", marker="o", linewidth=2)
+
+g.set_axis_labels("Redshift (z)", "Fraction of Galaxies")
+g.set_titles("{col_name}")
+
+# Set consistent y-axis limits
+for ax in g.axes.flat:
+    ax.set_ylim(0, 1)
+    ax.grid(True, alpha=0.3)
+
+plt.tight_layout()
+plt.show()
+```
+
+It should be noted here that @fig-plot-redshift-fraction-class looks quite different at 'high' redshift values (>0.15) when using the photometric redshift data instead of the spectral redshift measurements (@fig-plot-redshift-fraction-class-photoz). This suggests that we should be quite careful if we use photometric redshift data in our models and this may present a challenge for galaxy classification using data from the Vera C. Rubin Observatory.
+
+## ResNet50 Proof of Concept
+Code for a proof of concept image classifier using the ResNet50 model implemented in the PyTorch library is shown below.  This was done in order to understand how long it would take to train a model with the large datasets from DESI and SDSS rather than attempt to produce a good quality classifier. No resample of the dataset has been performed to account for imblanaces. A complex model such as ResNet gives an approximate upper bound to the training time estimate and validates that the computer equipment I have is capable of doing the job. The code has been tested on both Apple Silicon (M1 Ultra) and an Intel based laptop with an Nvidia RTX4000 GPU.  The model uses weights obtained from pretraining on the Imagenet1K dataset @dengImageNetLargescaleHierarchical2009. The model is configured to use GPU accelerated transforms from torchvision.transforms.v2, mixed precision training (on CUDA only) and prefetching data loaders to improve performance. On an M1 Ultra, the code trains at approximately 30 minutes per epoch, roughly 264 galaxies per second.  Out of the box with pretrained weights, the model achieves approximately 87.4% accuracy on a validation dataset (20% of the total data).  This improves to 89.4% accuracy after seven epochs of fine-tuning before the model starts to show signs of overfitting (See @fig-resnet50-training-plot below).  Further work is required to understand if the accuracy can be improved further and if the model performance can be increased.  ResNet50 is a complex model with 25.6 million parameters.  Based on the above distributions, the model may be inferring redshift from the images to help classify the galaxies and is something that needs to be investigated further.
+
+```{python}
+# | label: fig-resnet50-training-plot
+# | fig-cap: ResNet50 Proof of Concept Training and Validation Accuracy on Apple M1 Ultra
+resnet_df = pl.read_csv("../../input/resnet50 training metrics.csv", has_header=True)
+
+sns.lineplot(data=resnet_df, x="Epoch", y="Training", label="Train Accuracy")
+sns.lineplot(data=resnet_df, x="Epoch", y="Validation", label="Validation Accuracy")
+plt.xlabel("Epoch")
+plt.ylabel("Accuracy")
+plt.show()
+```
+
+```{python}
+#| label: resnet50-proof-of-concept
+#| eval: false
+#| echo: true
+
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader
+from torch.amp import autocast, GradScaler
+from torch.optim.lr_scheduler import OneCycleLR
+import torchvision.transforms.v2 as transforms_v2
+from torchvision import models
+from sklearn.model_selection import train_test_split
+
+# Filter df to only include objids that have corresponding images
+image_dir = "../input/images/"
+available_images = set()
+
+# Get list of available image files
+for filename in os.listdir(image_dir):
+    if filename.endswith(".jpeg"):
+        objid = filename.replace(".jpeg", "")
+        try:
+            # Try to convert to int to match objid format
+            available_images.add(int(objid))
+        except ValueError:
+            continue
+
+print(f"Found {len(available_images)} images")
+print(f"Original df size: {len(df)}")
+
+# Filter df to only include rows where objid has a corresponding image
+df_filtered = df.filter(pl.col("objid").is_in(list(available_images)))
+
+print(f"Filtered df size: {len(df_filtered)}")
+print(f"Class distribution after filtering:")
+print(df_filtered["class"].value_counts())
+
+from galaxy_dataset import GalaxyDataset
+
+# Set up device - prioritize MPS (Apple Silicon), then CUDA, then CPU
+if torch.backends.mps.is_available():
+    device = torch.device("mps")
+    print("Using Apple Silicon GPU (MPS)")
+elif torch.cuda.is_available():
+    device = torch.device("cuda")
+    print("Using CUDA GPU")
+else:
+    device = torch.device("cpu")
+    print("Using CPU")
+
+
+# GPU-accelerated transforms using torchvision.transforms.v2
+transform_train_gpu = transforms_v2.Compose(
+    [
+        transforms_v2.Resize((224, 224), antialias=True),
+        transforms_v2.RandomHorizontalFlip(p=0.5),
+        transforms_v2.RandomRotation(degrees=10),
+        transforms_v2.ToDtype(torch.float32, scale=True),
+        transforms_v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ]
+)
+
+transform_val_gpu = transforms_v2.Compose(
+    [
+        transforms_v2.Resize((224, 224), antialias=True),
+        transforms_v2.ToDtype(torch.float32, scale=True),
+        transforms_v2.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ]
+)
+
+# Split filtered data into train/validation
+train_df, val_df = train_test_split(
+    df_filtered.to_pandas(),
+    test_size=0.2,
+    random_state=42,
+    stratify=df_filtered["class"],
+)
+
+# Create datasets with basic transforms (GPU transforms applied in training loop)
+train_dataset = GalaxyDataset(train_df.reset_index(drop=True), image_dir, None)
+
+val_dataset = GalaxyDataset(val_df.reset_index(drop=True), image_dir, None)
+
+use_pin_memory = device.type == "cuda"
+
+# Create optimized data loaders
+train_loader = DataLoader(
+    train_dataset,
+    batch_size=32,
+    num_workers=1,
+    shuffle=True,
+    pin_memory=use_pin_memory,  # Faster CPU-GPU transfer,
+    # persistent_workers=True,  # Keep workers alive between epochs
+)
+val_loader = DataLoader(
+    val_dataset,
+    batch_size=32,
+    num_workers=1,
+    shuffle=False,
+    pin_memory=use_pin_memory,
+    # persistent_workers=True,
+)
+
+
+class PrefetchLoader:
+    def __init__(self, loader, device):
+        self.loader = loader
+        self.device = device
+        self.stream = torch.cuda.Stream() if device.type == "cuda" else None
+
+    def __iter__(self):
+        first = True
+        if self.stream is not None:
+            for next_images, next_labels in self.loader:
+                with torch.cuda.stream(self.stream):
+                    next_images = next_images.to(self.device, non_blocking=True)
+                    next_labels = next_labels.to(self.device, non_blocking=True)
+                if not first:
+                    yield images, labels
+                else:
+                    first = False
+                torch.cuda.current_stream().wait_stream(self.stream)
+                images, labels = next_images, next_labels
+            yield images, labels
+        else:
+            for images, labels in self.loader:
+                yield images.to(self.device), labels.to(self.device)
+
+
+# Use prefetching loaders
+train_prefetch = PrefetchLoader(train_loader, device)
+val_prefetch = PrefetchLoader(val_loader, device)
+
+# Create and optimize model
+num_classes = len(df_filtered["class"].unique())
+model = models.resnet50(weights=models.ResNet50_Weights.IMAGENET1K_V2)
+model.fc = nn.Linear(model.fc.in_features, num_classes)
+
+# Move model to device with channels_last for better performance (Nvidia only)
+model = model.to(device)  # , memory_format=torch.channels_last)
+
+# Compile model for additional speedup (PyTorch 2.0+)
+# if torch.cuda.is_available():
+#   try:
+#        model = torch.compile(model, mode="default")
+#        print("Model compiled successfully")
+#    except:
+#        print("Model compilation not available (requires PyTorch 2.0+)")
+
+criterion = nn.CrossEntropyLoss()
+optimizer = optim.AdamW(
+    model.parameters(), lr=0.001, weight_decay=0.01, betas=(0.9, 0.999)
+)
+
+
+def train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=20):
+    # Mixed precision scaler (only for CUDA)
+    scaler = GradScaler() if device.type == "cuda" else None
+    if scaler:
+        print("Using mixed precision training")
+    else:
+        print("Mixed precision not available for this device")
+
+    # Enable cuDNN optimizations
+    # torch.backends.cudnn.benchmark = True
+
+    # Cosine Annealing with warmup
+    # scheduler = optim.lr_scheduler.CosineAnnealingLR(
+    #    optimizer, T_max=num_epochs, eta_min=1e-6
+    # )
+    scheduler = OneCycleLR(
+        optimizer,
+        max_lr=0.01,
+        steps_per_epoch=len(train_loader),
+        epochs=num_epochs,
+        pct_start=0.1,
+    )
+
+
+    # Create prefetch loaders
+    train_prefetch = PrefetchLoader(train_loader, device)
+    val_prefetch = PrefetchLoader(val_loader, device)
+
+    for epoch in range(num_epochs):
+        # Training phase
+        model.train()
+        train_loss = 0.0
+        train_correct = 0
+
+        for images, labels in train_prefetch:
+            # Convert to channels_last for better performance (not for MPS)
+            # images = images.to(memory_format=torch.channels_last)
+
+            # Apply GPU transforms
+            images = transform_train_gpu(images)
+
+            # Mixed precision forward pass with gradient accumulation
+            if scaler:
+                with autocast(device_type=device.type):
+                    outputs = model(images)
+                    loss = criterion(outputs, labels)  # / accumulation_steps
+
+                scaler.scale(loss).backward()
+
+                scaler.unscale_(optimizer)
+
+
+                scaler.step(optimizer)
+                scaler.update()
+                optimizer.zero_grad()
+
+            else:
+                outputs = model(images)
+                loss = criterion(outputs, labels)  # / accumulation_steps
+                loss.backward()
+
+                optimizer.step()
+                optimizer.zero_grad()
+
+            train_loss += loss.item()  # * accumulation_steps
+            _, predicted = torch.max(outputs, 1)
+            train_correct += (predicted == labels).sum().item()
+
+        # Step scheduler once per epoch
+        scheduler.step()
+
+        # Validation phase with prefetching
+        model.eval()
+        val_loss = 0.0
+        val_correct = 0
+
+        with torch.no_grad():
+            for images, labels in val_prefetch:
+                # Convert to channels_last for consistency (not for MPS)
+                # images = images.to(memory_format=torch.channels_last)
+
+                # Apply GPU transforms
+                images = transform_val_gpu(images)
+
+                # Forward pass with mixed precision if available
+                if scaler:
+                    with autocast(device_type=device.type):
+                        outputs = model(images)
+                        loss = criterion(outputs, labels)
+                else:
+                    outputs = model(images)
+                    loss = criterion(outputs, labels)
+
+                val_loss += loss.item()
+                _, predicted = torch.max(outputs, 1)
+                val_correct += (predicted == labels).sum().item()
+
+        # Calculate accuracies
+        train_acc = train_correct / len(train_dataset)
+        val_acc = val_correct / len(val_dataset)
+
+        print(f"Epoch {epoch + 1}/{num_epochs}:")
+        print(
+            f"Train Loss: {train_loss / len(train_loader):.4f}, Train Acc: {train_acc:.4f}"
+        )
+        print(f"Val Loss: {val_loss / len(val_loader):.4f}, Val Acc: {val_acc:.4f}")
+        print(f"Current LR: {scheduler.get_last_lr()[0]:.6f}")
+        print("-" * 50)
+
+        # Early stopping based on validation accuracy
+        if epoch > 5 and val_acc > 0.95:
+            print("Early stopping - high validation accuracy achieved")
+            break
+
+    return model
+
+
+# Start optimized training
+train_model(model, train_loader, val_loader, criterion, optimizer, num_epochs=30)
+```
+
